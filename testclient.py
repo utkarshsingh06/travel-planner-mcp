@@ -3,7 +3,6 @@ import asyncio
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-
 server_params = StdioServerParameters(
     command="python",
     args=["server.py"],
@@ -78,6 +77,16 @@ async def main():
         )
         print("\nTrip details:")
         print(trip_details)
+        
+        remove_place = await session.call_tool(
+            "remove_place_from_trip_tool",
+            {
+                "trip_id": 1,
+                "place_id": 2
+           }
+        )
+        print("\nRemoved place from trip:")
+        print(remove_place)
 
 
 if __name__ == "__main__":

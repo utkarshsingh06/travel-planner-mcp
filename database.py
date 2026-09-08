@@ -247,3 +247,23 @@ def get_trip(trip_id):
         })
 
     return result
+
+def remove_place_from_trip(trip_id, place_id):
+    connection = sqlite3.connect(DB_NAME)
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        DELETE FROM trip_places
+        WHERE trip_id = ? AND place_id = ?
+    """, (trip_id, place_id))
+
+    connection.commit()
+
+    connection.close()
+
+    return {
+        "trip_id": trip_id,
+        "place_id": place_id,
+        "message": "Place removed from trip successfully"
+    }

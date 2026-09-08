@@ -1,13 +1,8 @@
 from mcp.server.fastmcp import FastMCP
-from database import (
-    initialize_database,
-    seed_places,
-    search_places,
-    get_place_details,
-    create_trip,
-    get_trip,
-    add_place_to_trip
-)
+
+from database import (add_place_to_trip, create_trip, get_place_details,
+                      get_trip, initialize_database, remove_place_from_trip,
+                      search_places, seed_places)
 
 mcp = FastMCP("Travel Planner")
 
@@ -74,6 +69,12 @@ def add_place_to_trip_tool(trip_id: int, place_id: int):
 
     return add_place_to_trip(trip_id, place_id)
 
+@mcp.tool()
+def remove_place_from_trip_tool(trip_id: int, place_id: int):
+    """Remove a place from a trip."""
+
+    return remove_place_from_trip(trip_id, place_id)
+
 if __name__ == "__main__":
     initialize_database()
     seed_places()
@@ -81,3 +82,4 @@ if __name__ == "__main__":
 
     print("Travel Planner MCP server starting...")
     mcp.run()
+    
