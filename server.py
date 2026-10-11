@@ -3,6 +3,7 @@ from mcp.server.fastmcp import FastMCP
 from database import (add_place_to_trip, create_trip, get_place_details,
                       get_trip, initialize_database, remove_place_from_trip,
                       search_places, seed_places)
+from geoapify import calculate_route, get_real_place_details, search_allplaces
 
 mcp = FastMCP("Travel Planner")
 
@@ -15,7 +16,7 @@ def hello():
 def search_places_tool(city: str, category: str = ""):
     """Search tourist places in a city, optionally filtered by category."""
 
-    places = search_places(city, category)
+    places = search_allplaces(city, category)
 
     return places
 
@@ -75,11 +76,40 @@ def remove_place_from_trip_tool(trip_id: int, place_id: int):
 
     return remove_place_from_trip(trip_id, place_id)
 
+@mcp.tool()
+def search_real_places_tool(city: str, category: str):
+    """Search real tourist places using Geoapify."""
+    return search_allplaces(city, category)
+
+@mcp.tool()
+def calculate_route_tool(
+    origin_latitude: float,
+    origin_longitude: float,
+    destination_latitude: float,
+    destination_longitude: float
+):
+    """Calculate driving distance and estimated travel time between two coordinates."""
+
+    origin = {
+        "latitude": origin_latitude,
+        "longitude": origin_longitude
+    }
+
+    destination = {
+        "latitude": destination_latitude,
+        "longitude": destination_longitude
+    }
+
+    return calculate_route(origin, destination)
+
+@mcp.tool()
+def get_real_place_details_tool(place_id: str):
+    """Get detailed information about a real place using its Geoapify place ID."""
+    return get_real_place_details(place_id)
+
 if __name__ == "__main__":
     initialize_database()
     seed_places()
-    print(search_places("Chennai", "Temple"))
-
     print("Travel Planner MCP server starting...")
     mcp.run()
     

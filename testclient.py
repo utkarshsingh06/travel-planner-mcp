@@ -22,71 +22,20 @@ async def main():
             tools = await session.list_tools()
 
             print("Available tools:")
-
-            for tool in tools.tools:
-                print("-", tool.name)
-
-            # Call our search tool
-            result = await session.call_tool(
-                "search_places_tool",
-                {
-                    "city": "Chennai",
-                    "category": "Temple"
-                }
-            )
-
-            print("\nSearch result:")
-            print(result)
             
-            
-            trip = await session.call_tool(
-                "create_trip_tool",
-                {
-                    "name": "Chennai Weekend",
-                    "destination": "Chennai",
-                    "start_date": "2026-10-10",
-                    "end_date": "2026-10-12",
-                    "budget": 10000
-                }
-            )
-
-            print("\nCreated trip:")
-            print(trip)
-            print("\nTrip result type:")
-            print(type(trip))
-
-            print("\nStructured content:")
-            print(trip.structuredContent)  
-            
-            
-            add_place = await session.call_tool(
-                "add_place_to_trip_tool",
-                {
-                    "trip_id": 1,
-                    "place_id": 2
-               }
-            )
-            print("\nAdded place to trip:")
-            print(add_place)
-            
-            trip_details = await session.call_tool(
-                "get_trip_tool",
-                {
-                    "trip_id": 1
-               }
-        )
-        print("\nTrip details:")
-        print(trip_details)
-        
-        remove_place = await session.call_tool(
-            "remove_place_from_trip_tool",
+           
+# 1. Search for real temples
+            search_result = await session.call_tool(
+            "search_real_places_tool",
             {
-                "trip_id": 1,
-                "place_id": 2
-           }
+                "city": "Chennai",
+                "category": "temple"
+            }
         )
-        print("\nRemoved place from trip:")
-        print(remove_place)
+            print("\n1. Search Results:")
+            print(search_result)
+
+
 
 
 if __name__ == "__main__":
